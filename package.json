@@ -103,3 +103,339 @@
     "vercel": "^44.6.4"
   }
 }
+``
+
+<glm_block >{"type": "mcp", "data": {"metadata": {"id": "call_1g0mck19nrf", "name": "Read", "arguments": "{\"filepath\":\"/home/z/my-project/prisma/schema.prisma\"}", "result": "     1\u2192// This is your Prisma schema file,\n     2\u2192// learn more about it in the docs: https://pris.ly/d/prisma-schema\n     3\u2192\n     4\u2192// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n     5\u2192// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n     6\u2192\n     7\u2192generator client {\n     8\u2192  provider = \"prisma-client-js\"\n     9\u2192}\n    10\u2192\n    11\u2192datasource db {\n    12\u2192  provider = \"sqlite\"\n    13\u2192  url      = env(\"DATABASE_URL\")\n    14\u2192}\n    15\u2192\n    16\u2192model User {\n    17\u2192  id            String   @id @default(cuid())\n    18\u2192  email         String   @unique\n    19\u2192  name          String?\n    20\u2192  password      String\n    21\u2192  isActive      Boolean  @default(true)\n    22\u2192  emailVerified Boolean  @default(false)\n    23\u2192  createdAt     DateTime @default(now())\n    24\u2192  updatedAt     DateTime @updatedAt\n    25\u2192  \n    26\u2192  // Relations\n    27\u2192  preferences   UserPreference?\n    28\u2192  sessions      Session[]\n    29\u2192  \n    30\u2192  @@map(\"users\")\n    31\u2192}\n    32\u2192\n    33\u2192model Session {\n    34\u2192  id           String   @id @default(cuid())\n    35\u2192  userId       String\n    36\u2192  token        String   @unique\n    37\u2192  expiresAt    DateTime\n    38\u2192  createdAt    DateTime @default(now())\n    39\u2192  \n    40\u2192  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n    41\u2192  \n    42\u2192  @@map(\"sessions\")\n    43\u2192}\n    44\u2192\n    45\u2192model UserPreference {\n    46\u2192  id            String   @id @default(cuid())\n    47\u2192  userId        String   @unique\n    48\u2192  profile       String   @default(\"student\") // \"student\", \"employee\", \"investor\", \"homemaker\"\n    49\u2192  categories    String   @default(\"[]\")     // JSON array of preferred categories\n    50\u2192  interests     String?  // JSON array of interests\n    51\u2192  language      String   @default(\"en\")\n    52\u2192  timezone      String   @default(\"UTC\")\n    53\u2192  notifications Boolean  @default(true)\n    54\u2192  telegramChat  String?  // Telegram chat ID for notifications\n    55\u2192  createdAt     DateTime @default(now())\n    56\u2192  updatedAt     DateTime @updatedAt\n    57\u2192  \n    58\u2192  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n    59\u2192  \n    60\u2192  @@map(\"user_preferences\")\n    61\u2192}\n    62\u2192\n    63\u2192model NewsArticle {\n    64\u2192  id          String   @id @default(cuid())\n    65\u2192  title       String\n    66\u2192  description String?\n    67\u2192  url         String   @unique\n    68\u2192  source      String?\n    69\u2192  category    String?\n    70\u2192  publishedAt DateTime?\n    71\u2192  createdAt   DateTime @default(now())\n    72\u2192  updatedAt   DateTime @updatedAt\n    73\u2192  \n    74\u2192  // AI-generated content\n    75\u2192  summary     String?\n    76\u2192  impactStudent    String?\n    77\u2192  impactEmployee   String?\n    78\u2192  impactInvestor   String?\n    79\u2192  impactHomemaker  String?\n    80\u2192  \n    81\u2192  @@map(\"news_articles\")\n    82\u2192}\n    83\u2192\n    84\u2192model UserProfile {\n    85\u2192  id        String   @id @default(cuid())\n    86\u2192  name      String\n    87\u2192  email     String?  @unique\n    88\u2192  profile   String   // \"student\", \"employee\", \"investor\", \"homemaker\"\n    89\u2192  interests String?  // JSON array of interests\n    90\u2192  createdAt DateTime @default(now())\n    91\u2192  updatedAt DateTime @updatedAt\n    92\u2192  \n    93\u2192  @@map(\"user_profiles\")\n    94\u2192}", "display_result": "", "duration": "999ms", "status": "completed", "is_error": false, "mcp_server": {"name": "mcp-server"}}, "thought": null, "ppt": null, "browser": null}}</glm_block>
+
+## 📦 File 2: prisma/schema.prisma
+
+```prisma
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  name          String?
+  password      String
+  isActive      Boolean  @default(true)
+  emailVerified Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relations
+  preferences   UserPreference?
+  sessions      Session[]
+  
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  token        String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("sessions")
+}
+
+model UserPreference {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  profile       String   @default("student") // "student", "employee", "investor", "homemaker"
+  categories    String   @default("[]")     // JSON array of preferred categories
+  interests     String?  // JSON array of interests
+  language      String   @default("en")
+  timezone      String   @default("UTC")
+  notifications Boolean  @default(true)
+  telegramChat  String?  // Telegram chat ID for notifications
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("user_preferences")
+}
+
+model NewsArticle {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  url         String   @unique
+  source      String?
+  category    String?
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // AI-generated content
+  summary     String?
+  impactStudent    String?
+  impactEmployee   String?
+  impactInvestor   String?
+  impactHomemaker  String?
+  
+  @@map("news_articles")
+}
+
+model UserProfile {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?  @unique
+  profile   String   // "student", "employee", "investor", "homemaker"
+  interests String?  // JSON array of interests
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("user_profiles")
+}
+``
+
+<glm_block >{"type": "mcp", "data": {"metadata": {"id": "call_uycaief1obf", "name": "Read", "arguments": "{\"filepath\":\"/home/z/my-project/src/app/page.tsx\"}", "result": "     1\u2192'use client';\n     2\u2192\n     3\u2192import { useState, useEffect } from 'react';\n     4\u2192import { useRouter } from 'next/navigation';\n     5\u2192import Link from 'next/link';\n     6\u2192import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';\n     7\u2192import { Button } from '@/components/ui/button';\n     8\u2192import { Input } from '@/components/ui/input';\n     9\u2192import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';\n    10\u2192import { Badge } from '@/components/ui/badge';\n    11\u2192import { Skeleton } from '@/components/ui/skeleton';\n    12\u2192import { Search, RefreshCw, Download, Filter, TrendingUp, Users, FileText, Bell, User, LogOut } from 'lucide-react';\n    13\u2192\n    14\u2192interface NewsArticle {\n    15\u2192  id: string;\n    16\u2192  title: string;\n    17\u2192  description: string;\n    18\u2192  url: string;\n    19\u2192  source: string;\n    20\u2192  category: string;\n    21\u2192  publishedAt: string;\n    22\u2192  summary: string;\n    23\u2192  impactStudent?: string;\n    24\u2192  impactEmployee?: string;\n    25\u2192  impactInvestor?: string;\n    26\u2192  impactHomemaker?: string;\n    27\u2192}\n    28\u2192\n    29\u2192interface User {\n    30\u2192  id: string;\n    31\u2192  email: string;\n    32\u2192  name?: string;\n    33\u2192  preferences: {\n    34\u2192    profile: string;\n    35\u2192    categories: string[];\n    36\u2192    interests?: string;\n    37\u2192    language: string;\n    38\u2192    timezone: string;\n    39\u2192    notifications: boolean;\n    40\u2192    telegramChat?: string;\n    41\u2192  };\n    42\u2192}\n    43\u2192\n    44\u2192const CATEGORIES = ['all', 'technology', 'business', 'science', 'health', 'sports', 'entertainment'];\n    45\u2192const PROFILES = ['all', 'student', 'employee', 'investor', 'homemaker'];\n    46\u2192\n    47\u2192const CATEGORY_COLORS = {\n    48\u2192  technology: 'bg-blue-100 text-blue-800',\n    49\u2192  business: 'bg-green-100 text-green-800',\n    50\u2192  science: 'bg-purple-100 text-purple-800',\n    51\u2192  health: 'bg-red-100 text-red-800',\n    52\u2192  sports: 'bg-yellow-100 text-yellow-800',\n    53\u2192  entertainment: 'bg-pink-100 text-pink-800',\n    54\u2192  general: 'bg-gray-100 text-gray-800'\n    55\u2192};\n    56\u2192\n    57\u2192export default function Home() {\n    58\u2192  const router = useRouter();\n    59\u2192  const [user, setUser] = useState<User | null>(null);\n    60\u2192  const [articles, setArticles] = useState<NewsArticle[]>([]);\n    61\u2192  const [loading, setLoading] = useState(true);\n    62\u2192  const [authLoading, setAuthLoading] = useState(true);\n    63\u2192  const [scraping, setScraping] = useState(false);\n    64\u2192  const [searchTerm, setSearchTerm] = useState('');\n    65\u2192  const [selectedCategory, setSelectedCategory] = useState('all');\n    66\u2192  const [selectedProfile, setSelectedProfile] = useState('all');\n    67\u2192  const [exporting, setExporting] = useState(false);\n    68\u2192\n    69\u2192  useEffect(() => {\n    70\u2192    checkAuth();\n    71\u2192  }, []);\n    72\u2192\n    73\u2192  useEffect(() => {\n    74\u2192    if (user) {\n    75\u2192      // Set user's preferred profile and categories\n    76\u2192      setSelectedProfile(user.preferences.profile);\n    77\u2192      if (user.preferences.categories.length > 0) {\n    78\u2192        setSelectedCategory(user.preferences.categories[0]);\n    79\u2192      }\n    80\u2192      fetchNews();\n    81\u2192    }\n    82\u2192  }, [user]);\n    83\u2192\n    84\u2192  const checkAuth = async () => {\n    85\u2192    setAuthLoading(true);\n    86\u2192    try {\n    87\u2192      const token = localStorage.getItem('authToken');\n    88\u2192      if (!token) {\n    89\u2192        setAuthLoading(false);\n    90\u2192        return;\n    91\u2192      }\n    92\u2192\n    93\u2192      const response = await fetch('/api/auth/me', {\n    94\u2192        headers: {\n    95\u2192          'Authorization': `Bearer ${token}`,\n    96\u2192        },\n    97\u2192      });\n    98\u2192\n    99\u2192      if (response.ok) {\n   100\u2192        const data = await response.json();\n   101\u2192        setUser(data.user);\n   102\u2192      } else {\n   103\u2192        localStorage.removeItem('authToken');\n   104\u2192      }\n   105\u2192    } catch (error) {\n   106\u2192      console.error('Auth check error:', error);\n   107\u2192      localStorage.removeItem('authToken');\n   108\u2192    } finally {\n   109\u2192      setAuthLoading(false);\n   110\u2192    }\n   111\u2192  };\n   112\u2192\n   113\u2192  const fetchNews = async () => {\n   114\u2192    if (!user) return;\n   115\u2192    \n   116\u2192    setLoading(true);\n   117\u2192    try {\n   118\u2192      const params = new URLSearchParams();\n   119\u2192      if (selectedCategory !== 'all') params.append('category', selectedCategory);\n   120\u2192      if (selectedProfile !== 'all') params.append('profile', selectedProfile);\n   121\u2192      params.append('limit', '20');\n   122\u2192\n   123\u2192      const response = await fetch(`/api/news?${params}`);\n   124\u2192      const data = await response.json();\n   125\u2192      \n   126\u2192      if (data.success) {\n   127\u2192        setArticles(data.data);\n   128\u2192      }\n   129\u2192    } catch (error) {\n   130\u2192      console.error('Error fetching news:', error);\n   131\u2192    } finally {\n   132\u2192      setLoading(false);\n   133\u2192    }\n   134\u2192  };\n   135\u2192\n   136\u2192  const scrapeNews = async () => {\n   137\u2192    if (!user) return;\n   138\u2192    \n   139\u2192    setScraping(true);\n   140\u2192    try {\n   141\u2192      const response = await fetch('/api/news', {\n   142\u2192        method: 'POST',\n   143\u2192        headers: { 'Content-Type': 'application/json' },\n   144\u2192        body: JSON.stringify({ action: 'scrape' })\n   145\u2192      });\n   146\u2192      \n   147\u2192      const data = await response.json();\n   148\u2192      if (data.success) {\n   149\u2192        await fetchNews(); // Refresh the news list\n   150\u2192      }\n   151\u2192    } catch (error) {\n   152\u2192      console.error('Error scraping news:', error);\n   153\u2192    } finally {\n   154\u2192      setScraping(false);\n   155\u2192    }\n   156\u2192  };\n   157\u2192\n   158\u2192  const exportToPDF = async () => {\n   159\u2192    if (!user) return;\n   160\u2192    \n   161\u2192    setExporting(true);\n   162\u2192    try {\n   163\u2192      const response = await fetch('/api/export', {\n   164\u2192        method: 'POST',\n   165\u2192        headers: { 'Content-Type': 'application/json' },\n   166\u2192        body: JSON.stringify({\n   167\u2192          profile: selectedProfile,\n   168\u2192          category: selectedCategory\n   169\u2192        })\n   170\u2192      });\n   171\u2192      \n   172\u2192      const data = await response.json();\n   173\u2192      if (data.success) {\n   174\u2192        // Create a blob and download it\n   175\u2192        const blob = new Blob([data.html], { type: 'text/html' });\n   176\u2192        const url = URL.createObjectURL(blob);\n   177\u2192        const a = document.createElement('a');\n   178\u2192        a.href = url;\n   179\u2192        a.download = data.filename;\n   180\u2192        document.body.appendChild(a);\n   181\u2192        a.click();\n   182\u2192        document.body.removeChild(a);\n   183\u2192        URL.revokeObjectURL(url);\n   184\u2192      }\n   185\u2192    } catch (error) {\n   186\u2192      console.error('Error exporting to PDF:', error);\n   187\u2192    } finally {\n   188\u2192      setExporting(false);\n   189\u2192    }\n   190\u2192  };\n   191\u2192\n   192\u2192  const handleLogout = async () => {\n   193\u2192    try {\n   194\u2192      const token = localStorage.getItem('authToken');\n   195\u2192      if (token) {\n   196\u2192        await fetch('/api/auth/logout', {\n   197\u2192          method: 'POST',\n   198\u2192          headers: {\n   199\u2192            'Authorization': `Bearer ${token}`,\n   200\u2192          },\n   201\u2192        });\n   202\u2192      }\n   203\u2192      localStorage.removeItem('authToken');\n   204\u2192      setUser(null);\n   205\u2192      setArticles([]);\n   206\u2192      router.refresh();\n   207\u2192    } catch (error) {\n   208\u2192      console.error('Logout error:', error);\n   209\u2192      localStorage.removeItem('authToken');\n   210\u2192      setUser(null);\n   211\u2192      setArticles([]);\n   212\u2192      router.refresh();\n   213\u2192    }\n   214\u2192  };\n   215\u2192\n   216\u2192  const filteredArticles = articles.filter(article =>\n   217\u2192    article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||\n   218\u2192    article.description.toLowerCase().includes(searchTerm.toLowerCase())\n   219\u2192  );\n   220\u2192\n   221\u2192  const getImpactText = (article: NewsArticle) => {\n   222\u2192    if (selectedProfile === 'all') return null;\n   223\u2192    const impactField = `impact${selectedProfile.charAt(0).toUpperCase() + selectedProfile.slice(1)}` as keyof NewsArticle;\n   224\u2192    return article[impactField];\n   225\u2192  };\n   226\u2192\n   227\u2192  if (authLoading) {\n   228\u2192    return (\n   229\u2192      <div className=\"min-h-screen bg-gray-50 flex items-center justify-center\">\n   230\u2192        <div className=\"text-center\">\n   231\u2192          <div className=\"animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4\"></div>\n   232\u2192          <p className=\"text-gray-600\">Loading...</p>\n   233\u2192        </div>\n   234\u2192      </div>\n   235\u2192    );\n   236\u2192  }\n   237\u2192\n   238\u2192  if (!user) {\n   239\u2192    return (\n   240\u2192      <div className=\"min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100\">\n   241\u2192        {/* Header */}\n   242\u2192        <header className=\"bg-white shadow-sm border-b\">\n   243\u2192          <div className=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4\">\n   244\u2192            <div className=\"flex items-center justify-between\">\n   245\u2192              <div className=\"flex items-center space-x-3\">\n   246\u2192                <TrendingUp className=\"h-8 w-8 text-blue-600\" />\n   247\u2192                <div>\n   248\u2192                  <h1 className=\"text-2xl font-bold text-gray-900\">DailyLifeScanner.AI</h1>\n   249\u2192                  <p className=\"text-sm text-gray-600\">Personalized news insights for your lifestyle</p>\n   250\u2192                </div>\n   251\u2192              </div>\n   252\u2192            </div>\n   253\u2192          </div>\n   254\u2192        </header>\n   255\u2192\n   256\u2192        {/* Hero Section */}\n   257\u2192        <div className=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16\">\n   258\u2192          <div className=\"text-center\">\n   259\u2192            <h2 className=\"text-4xl font-bold text-gray-900 mb-6\">\n   260\u2192              Get Personalized News Insights\n   261\u2192            </h2>\n   262\u2192            <p className=\"text-xl text-gray-600 mb-8 max-w-3xl mx-auto\">\n   263\u2192              DailyLifeScanner.AI uses advanced AI to analyze news and show you how it affects your lifestyle. \n   264\u2192              Get personalized insights based on your profile - whether you're a student, employee, investor, or homemaker.\n   265\u2192            </p>\n   266\u2192            \n   267\u2192            <div className=\"flex flex-col sm:flex-row gap-4 justify-center mb-12\">\n   268\u2192              <Link href=\"/login\">\n   269\u2192                <Button size=\"lg\" className=\"w-full sm:w-auto\">\n   270\u2192                  Sign In\n   271\u2192                </Button>\n   272\u2192              </Link>\n   273\u2192              <Link href=\"/signup\">\n   274\u2192                <Button variant=\"outline\" size=\"lg\" className=\"w-full sm:w-auto\">\n   275\u2192                  Create Account\n   276\u2192                </Button>\n   277\u2192              </Link>\n   278\u2192            </div>\n   279\u2192\n   280\u2192            {/* Features */}\n   281\u2192            <div className=\"grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto\">\n   282\u2192              <Card>\n   283\u2192                <CardHeader>\n   284\u2192                  <CardTitle className=\"flex items-center space-x-2\">\n   285\u2192                    <Users className=\"h-5 w-5 text-blue-600\" />\n   286\u2192                    <span>Personalized</span>\n   287\u2192                  </CardTitle>\n   288\u2192                </CardHeader>\n   289\u2192                <CardContent>\n   290\u2192                  <p className=\"text-gray-600\">\n   291\u2192                    Get news insights tailored to your profile and interests\n   292\u2192                  </p>\n   293\u2192                </CardContent>\n   294\u2192              </Card>\n   295\u2192\n   296\u2192              <Card>\n   297\u2192                <CardHeader>\n   298\u2192                  <CardTitle className=\"flex items-center space-x-2\">\n   299\u2192                    <Bell className=\"h-5 w-5 text-green-600\" />\n   300\u2192                    <span>Real-time</span>\n   301\u2192                  </CardTitle>\n   302\u2192                </CardHeader>\n   303\u2192                <CardContent>\n   304\u2192                  <p className=\"text-gray-600\">\n   305\u2192                    Stay updated with the latest news and AI analysis\n   306\u2192                  </p>\n   307\u2192                </CardContent>\n   308\u2192              </Card>\n   309\u2192\n   310\u2192              <Card>\n   311\u2192                <CardHeader>\n   312\u2192                  <CardTitle className=\"flex items-center space-x-2\">\n   313\u2192                    <FileText className=\"h-5 w-5 text-purple-600\" />\n   314\u2192                    <span>Exportable</span>\n   315\u2192                  </CardTitle>\n   316\u2192                </CardHeader>\n   317\u2192                <CardContent>\n   318\u2192                  <p className=\"text-gray-600\">\n   319\u2192                    Export daily summaries to PDF for offline reading\n   320\u2192                  </p>\n   321\u2192                </CardContent>\n   322\u2192              </Card>\n   323\u2192            </div>\n   324\u2192          </div>\n   325\u2192        </div>\n   326\u2192      </div>\n   327\u2192    );\n   328\u2192  }\n   329\u2192\n   330\u2192  return (\n   331\u2192    <div className=\"min-h-screen bg-gray-50\">\n   332\u2192      {/* Header */}\n   333\u2192      <header className=\"bg-white shadow-sm border-b\">\n   334\u2192        <div className=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4\">\n   335\u2192          <div className=\"flex items-center justify-between\">\n   336\u2192            <div className=\"flex items-center space-x-3\">\n   337\u2192              <TrendingUp className=\"h-8 w-8 text-blue-600\" />\n   338\u2192              <div>\n   339\u2192                <h1 className=\"text-2xl font-bold text-gray-900\">DailyLifeScanner.AI</h1>\n   340\u2192                <p className=\"text-sm text-gray-600\">Welcome back, {user.name || user.email}!</p>\n   341\u2192              </div>\n   342\u2192            </div>\n   343\u2192            <div className=\"flex items-center space-x-2\">\n   344\u2192              <Link href=\"/profile\">\n   345\u2192                <Button variant=\"outline\" size=\"sm\">\n   346\u2192                  <User className=\"h-4 w-4 mr-2\" />\n   347\u2192                  Profile\n   348\u2192                </Button>\n   349\u2192              </Link>\n   350\u2192              <Button\n   351\u2192                onClick={scrapeNews}\n   352\u2192                disabled={scraping}\n   353\u2192                variant=\"outline\"\n   354\u2192                size=\"sm\"\n   355\u2192              >\n   356\u2192                <RefreshCw className={`h-4 w-4 mr-2 ${scraping ? 'animate-spin' : ''}`} />\n   357\u2192                {scraping ? 'Scraping...' : 'Refresh News'}\n   358\u2192              </Button>\n   359\u2192              <Button\n   360\u2192                onClick={exportToPDF}\n   361\u2192                disabled={exporting || filteredArticles.length === 0}\n   362\u2192                variant=\"outline\"\n   363\u2192                size=\"sm\"\n   364\u2192              >\n   365\u2192                <Download className=\"h-4 w-4 mr-2\" />\n   366\u2192                {exporting ? 'Exporting...' : 'Export PDF'}\n   367\u2192              </Button>\n   368\u2192              <Button onClick={handleLogout} variant=\"outline\" size=\"sm\">\n   369\u2192                <LogOut className=\"h-4 w-4 mr-2\" />\n   370\u2192                Logout\n   371\u2192              </Button>\n   372\u2192            </div>\n   373\u2192          </div>\n   374\u2192        </div>\n   375\u2192      </header>\n   376\u2192\n   377\u2192      {/* Stats Cards */}\n   378\u2192      <div className=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6\">\n   379\u2192        <div className=\"grid grid-cols-1 md:grid-cols-4 gap-4 mb-6\">\n   380\u2192          <Card>\n   381\u2192            <CardContent className=\"p-4\">\n   382\u2192              <div className=\"flex items-center space-x-2\">\n   383\u2192                <FileText className=\"h-5 w-5 text-blue-600\" />\n   384\u2192                <div>\n   385\u2192                  <p className=\"text-sm text-gray-600\">Total Articles</p>\n   386\u2192                  <p className=\"text-2xl font-bold\">{filteredArticles.length}</p>\n   387\u2192                </div>\n   388\u2192              </div>\n   389\u2192            </CardContent>\n   390\u2192          </Card>\n   391\u2192          <Card>\n   392\u2192            <CardContent className=\"p-4\">\n   393\u2192              <div className=\"flex items-center space-x-2\">\n   394\u2192                <Users className=\"h-5 w-5 text-green-600\" />\n   395\u2192                <div>\n   396\u2192                  <p className=\"text-sm text-gray-600\">Your Profile</p>\n   397\u2192                  <p className=\"text-lg font-semibold capitalize\">{selectedProfile}</p>\n   398\u2192                </div>\n   399\u2192              </div>\n   400\u2192            </CardContent>\n   401\u2192          </Card>\n   402\u2192          <Card>\n   403\u2192            <CardContent className=\"p-4\">\n   404\u2192              <div className=\"flex items-center space-x-2\">\n   405\u2192                <Filter className=\"h-5 w-5 text-purple-600\" />\n   406\u2192                <div>\n   407\u2192                  <p className=\"text-sm text-gray-600\">Category</p>\n   408\u2192                  <p className=\"text-lg font-semibold capitalize\">{selectedCategory}</p>\n   409\u2192                </div>\n   410\u2192              </div>\n   411\u2192            </CardContent>\n   412\u2192          </Card>\n   413\u2192          <Card>\n   414\u2192            <CardContent className=\"p-4\">\n   415\u2192              <div className=\"flex items-center space-x-2\">\n   416\u2192                <Bell className=\"h-5 w-5 text-orange-600\" />\n   417\u2192                <div>\n   418\u2192                  <p className=\"text-sm text-gray-600\">Last Updated</p>\n   419\u2192                  <p className=\"text-sm font-medium\">Just now</p>\n   420\u2192                </div>\n   421\u2192              </div>\n   422\u2192            </CardContent>\n   423\u2192          </Card>\n   424\u2192        </div>\n   425\u2192\n   426\u2192        {/* Filters */}\n   427\u2192        <Card className=\"mb-6\">\n   428\u2192          <CardContent className=\"p-4\">\n   429\u2192            <div className=\"flex flex-col md:flex-row gap-4\">\n   430\u2192              <div className=\"flex-1\">\n   431\u2192                <div className=\"relative\">\n   432\u2192                  <Search className=\"absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400\" />\n   433\u2192                  <Input\n   434\u2192                    placeholder=\"Search articles...\"\n   435\u2192                    value={searchTerm}\n   436\u2192                    onChange={(e) => setSearchTerm(e.target.value)}\n   437\u2192                    className=\"pl-10\"\n   438\u2192                  />\n   439\u2192                </div>\n   440\u2192              </div>\n   441\u2192              <div className=\"flex gap-2\">\n   442\u2192                <Select value={selectedCategory} onValueChange={setSelectedCategory}>\n   443\u2192                  <SelectTrigger className=\"w-40\">\n   444\u2192                    <SelectValue placeholder=\"Category\" />\n   445\u2192                  </SelectTrigger>\n   446\u2192                  <SelectContent>\n   447\u2192                    {CATEGORIES.map(category => (\n   448\u2192                      <SelectItem key={category} value={category}>\n   449\u2192                        {category.charAt(0).toUpperCase() + category.slice(1)}\n   450\u2192                      </SelectItem>\n   451\u2192                    ))}\n   452\u2192                  </SelectContent>\n   453\u2192                </Select>\n   454\u2192                <Select value={selectedProfile} onValueChange={setSelectedProfile}>\n   455\u2192                  <SelectTrigger className=\"w-40\">\n   456\u2192                    <SelectValue placeholder=\"Profile\" />\n   457\u2192                  </SelectTrigger>\n   458\u2192                  <SelectContent>\n   459\u2192                    {PROFILES.map(profile => (\n   460\u2192                      <SelectItem key={profile} value={profile}>\n   461\u2192                        {profile.charAt(0).toUpperCase() + profile.slice(1)}\n   462\u2192                    <response clipped><NOTE>To save on context only part of this file has been shown to you. You should retry this tool after you have searched inside the file with `grep -n` in order to find the line numbers of what you are looking for.</NOTE>", "display_result": "", "duration": "999ms", "status": "completed", "is_error": false, "mcp_server": {"name": "mcp-server"}}, "thought": null, "ppt": null, "browser": null}}</glm_block>
+
+## 📦 File 3: src/app/page.tsx (Part 1)
+
+```tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Search, RefreshCw, Download, Filter, TrendingUp, Users, FileText, Bell, User, LogOut } from 'lucide-react';
+
+interface NewsArticle {
+  id: string;
+  title: string;
+  description: string;
+  url: string;
+  source: string;
+  category: string;
+  publishedAt: string;
+  summary: string;
+  impactStudent?: string;
+  impactEmployee?: string;
+  impactInvestor?: string;
+  impactHomemaker?: string;
+}
+
+interface User {
+  id: string;
+  email: string;
+  name?: string;
+  preferences: {
+    profile: string;
+    categories: string[];
+    interests?: string;
+    language: string;
+    timezone: string;
+    notifications: boolean;
+    telegramChat?: string;
+  };
+}
+
+const CATEGORIES = ['all', 'technology', 'business', 'science', 'health', 'sports', 'entertainment'];
+const PROFILES = ['all', 'student', 'employee', 'investor', 'homemaker'];
+
+const CATEGORY_COLORS = {
+  technology: 'bg-blue-100 text-blue-800',
+  business: 'bg-green-100 text-green-800',
+  science: 'bg-purple-100 text-purple-800',
+  health: 'bg-red-100 text-red-800',
+  sports: 'bg-yellow-100 text-yellow-800',
+  entertainment: 'bg-pink-100 text-pink-800',
+  general: 'bg-gray-100 text-gray-800'
+};
+
+export default function Home() {
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+  const [articles, setArticles] = useState<NewsArticle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [scraping, setScraping] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedProfile, setSelectedProfile] = useState('all');
+  const [exporting, setExporting] = useState(false);
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      // Set user's preferred profile and categories
+      setSelectedProfile(user.preferences.profile);
+      if (user.preferences.categories.length > 0) {
+        setSelectedCategory(user.preferences.categories[0]);
+      }
+      fetchNews();
+    }
+  }, [user]);
+
+  const checkAuth = async () => {
+    setAuthLoading(true);
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        setAuthLoading(false);
+        return;
+      }
+
+      const response = await fetch('/api/auth/me', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+      } else {
+        localStorage.removeItem('authToken');
+      }
+    } catch (error) {
+      console.error('Auth check error:', error);
+      localStorage.removeItem('authToken');
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const fetchNews = async () => {
+    if (!user) return;
+    
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (selectedCategory !== 'all') params.append('category', selectedCategory);
+      if (selectedProfile !== 'all') params.append('profile', selectedProfile);
+      params.append('limit', '20');
+
+      const response = await fetch(`/api/news?${params}`);
+      const data = await response.json();
+      
+      if (data.success) {
+        setArticles(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching news:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const scrapeNews = async () => {
+    if (!user) return;
+    
+    setScraping(true);
+    try {
+      const response = await fetch('/api/news', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'scrape' })
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        await fetchNews(); // Refresh the news list
+      }
+    } catch (error) {
+      console.error('Error scraping news:', error);
+    } finally {
+      setScraping(false);
+    }
+  };
+
+  const exportToPDF = async () => {
+    if (!user) return;
+    
+    setExporting(true);
+    try {
+      const response = await fetch('/api/export', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          profile: selectedProfile,
+          category: selectedCategory
+        })
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        // Create a blob and download it
+        const blob = new Blob([data.html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = data.filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    } catch (error) {
+      console.error('Error exporting to PDF:', error);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        await fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+      }
+      localStorage.removeItem('authToken');
+      setUser(null);
+      setArticles([]);
+      router.refresh();
+    } catch (error) {
+      console.error('Logout error:', error);
+      localStorage.removeItem('authToken');
+      setUser(null);
+      setArticles([]);
+      router.refresh();
+    }
+  };
+
+  const filteredArticles = articles.filter(article =>
+    article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    article.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const getImpactText = (article: NewsArticle) => {
+    if (selectedProfile === 'all') return null;
+    const impactField = `impact${selectedProfile.charAt(0).toUpperCase() + selectedProfile.slice(1)}` as keyof NewsArticle;
+    return article[impactField];
+  };
+``
+
+<glm_block >{"type": "mcp", "data": {"metadata": {"id": "call_aiazdbjg87", "name": "Grep", "arguments": "{\"-n\":true,\"output_mode\":\"content\",\"path\":\"/home/z/my-project/src/app/page.tsx\",\"pattern\":\"return \\\\(\"}", "result": "Error calling tool 'Grep': 'Ripgrepy' object has no attribute 'line_numbers'", "display_result": "", "duration": "999ms", "status": "completed", "is_error": true, "mcp_server": {"name": "mcp-server"}}, "thought": null, "ppt": null, "browser": null}}</glm_block>
