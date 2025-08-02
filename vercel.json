@@ -1,6 +1,5 @@
 {
   "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
   "functions": {
@@ -9,17 +8,15 @@
     }
   },
   "env": {
-    "NEXTAUTH_SECRET": "@nextauth_secret",
-    "NEXTAUTH_URL": "@nextauth_url",
-    "TELEGRAM_BOT_TOKEN": "@telegram_bot_token",
-    "DATABASE_URL": "@database_url"
+    "NEXTAUTH_SECRET": "r5VY5shFQYc5k9xRfzIbQ0D6YZRWz/27rRHR8a7msak=",
+    "POSTGRES_PRISMA_URL": "@postgres_prisma_url",
+    "POSTGRES_URL_NON_POOLING": "@postgres_url_non_pooling"
   },
   "build": {
     "env": {
-      "NEXTAUTH_SECRET": "@nextauth_secret",
-      "NEXTAUTH_URL": "@nextauth_url",
-      "TELEGRAM_BOT_TOKEN": "@telegram_bot_token",
-      "DATABASE_URL": "@database_url"
+      "NEXTAUTH_SECRET": "r5VY5shFQYc5k9xRfzIbQ0D6YZRWz/27rRHR8a7msak=",
+      "POSTGRES_PRISMA_URL": "@postgres_prisma_url",
+      "POSTGRES_URL_NON_POOLING": "@postgres_url_non_pooling"
     }
   }
 }

@@ -78,9 +78,6 @@ export async function PUT(request: NextRequest) {
     if (updateData.notifications !== undefined) {
       preferencesUpdate.notifications = updateData.notifications;
     }
-    if (updateData.telegramChat !== undefined) {
-      preferencesUpdate.telegramChat = updateData.telegramChat;
-    }
 
     // Update preferences
     await db.userPreference.update({
