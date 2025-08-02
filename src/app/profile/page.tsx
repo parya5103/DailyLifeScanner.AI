@@ -24,7 +24,6 @@ interface User {
     language: string;
     timezone: string;
     notifications: boolean;
-    telegramChat?: string;
   };
 }
 
@@ -49,7 +48,6 @@ export default function ProfilePage() {
     language: 'en',
     timezone: 'UTC',
     notifications: true,
-    telegramChat: '',
   });
 
   useEffect(() => {
@@ -83,7 +81,6 @@ export default function ProfilePage() {
           language: data.user.preferences.language,
           timezone: data.user.preferences.timezone,
           notifications: data.user.preferences.notifications,
-          telegramChat: data.user.preferences.telegramChat || '',
         });
       } else {
         localStorage.removeItem('authToken');
@@ -320,18 +317,6 @@ export default function ProfilePage() {
                         </SelectContent>
                       </Select>
                     </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="telegramChat">Telegram Chat ID</Label>
-                    <Input
-                      id="telegramChat"
-                      type="text"
-                      placeholder="Enter your Telegram chat ID"
-                      value={formData.telegramChat}
-                      onChange={(e) => setFormData(prev => ({ ...prev, telegramChat: e.target.value }))}
-                    />
-                    <p className="text-sm text-gray-500">Optional: For Telegram notifications</p>
                   </div>
                   
                   <div className="flex items-center space-x-2">

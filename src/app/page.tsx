@@ -37,7 +37,6 @@ interface User {
     language: string;
     timezone: string;
     notifications: boolean;
-    telegramChat?: string;
   };
 }
 
