@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+
+  hermes-agent:
+
+    image: nousresearch/hermes-agent:latest
+
+    container_name: hermes-agent
+
+    restart: unless-stopped
+
+    ports:
+      - "8642:8642"
+
+    environment:
+
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL}
+
+      OPENAI_MODEL: ${OPENAI_MODEL}
+
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+
+      API_SERVER_ENABLED: "true"
+
+      API_SERVER_HOST: "0.0.0.0"
+
+      API_SERVER_PORT: "8642"
+
+      API_SERVER_KEY: "hermes-secret"
+
+      API_SERVER_CORS_ORIGINS: "*"
+
+      HERMES_TELEGRAM_ENABLED: "true"
+
+      HERMES_MEMORY_ENABLED: "true"
+
+      HERMES_LOG_LEVEL: "INFO"
+
+    volumes:
+      - ./data:/opt/data
+
+    command: gateway run
