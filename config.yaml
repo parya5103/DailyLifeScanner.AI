@@ -1,0 +1,17 @@
+model:
+  provider: openai
+  model_name: llama3-70b-8192
+
+server:
+  enabled: true
+  host: 0.0.0.0
+  port: 8642
+
+telegram:
+  enabled: true
+
+memory:
+  enabled: true
+
+logging:
+  level: INFO
