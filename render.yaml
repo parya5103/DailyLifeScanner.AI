@@ -1,0 +1,50 @@
+services:
+  - type: web
+
+    name: hermes-agent
+
+    env: docker
+
+    plan: free
+
+    autoDeploy: true
+
+    healthCheckPath: /
+
+    envVars:
+
+      - key: OPENAI_API_KEY
+        sync: false
+
+      - key: OPENAI_BASE_URL
+        value: https://api.groq.com/openai/v1
+
+      - key: OPENAI_MODEL
+        value: llama3-70b-8192
+
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+
+      - key: API_SERVER_ENABLED
+        value: true
+
+      - key: API_SERVER_HOST
+        value: 0.0.0.0
+
+      - key: API_SERVER_PORT
+        value: 8642
+
+      - key: API_SERVER_CORS_ORIGINS
+        value: "*"
+
+      - key: API_SERVER_KEY
+        generateValue: true
+
+      - key: HERMES_TELEGRAM_ENABLED
+        value: true
+
+      - key: HERMES_MEMORY_ENABLED
+        value: true
+
+      - key: HERMES_LOG_LEVEL
+        value: INFO
